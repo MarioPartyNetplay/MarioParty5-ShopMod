@@ -16,7 +16,7 @@ def compile_to_asm(filename):
     if sys.platform != "win32":
         command = [
             "wine",
-            "compiler/bin/powerpc-eabi-gcc.exe",
+            "compiler/powerpc-gcc/bin/powerpc-eabi-gcc.exe",
             "-mcpu=powerpc",         # Target PowerPC
             "-S",                    # Generate assembly output
             "-fno-asynchronous-unwind-tables",  # Remove unnecessary unwind tables
@@ -29,7 +29,7 @@ def compile_to_asm(filename):
         ]
     else:
         command = [
-            "compiler/bin/powerpc-eabi-gcc",
+            "compiler/powerpc-gcc/bin/powerpc-eabi-gcc",
             "-mcpu=powerpc",         # Target PowerPC
             "-S",                    # Generate assembly output
             "-fno-asynchronous-unwind-tables",  # Remove unnecessary unwind tables
