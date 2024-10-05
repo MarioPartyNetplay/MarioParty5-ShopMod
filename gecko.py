@@ -39,7 +39,7 @@ for b in data:
     if counter % 8 == 0 and counter != 0:
         code.append("\n")  # New line after every 8 bytes
 
-    if counter % 4 == 0 and counter != 0:
+    if counter % 4 == 0 and counter % 8 != 0 and counter != 0:
         code.append(" ")  # Add space after every 4 bytes
 
     code.append(f"{b:02X}")  # Append the byte in hex format
