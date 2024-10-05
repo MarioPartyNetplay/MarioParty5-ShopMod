@@ -8,9 +8,12 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
-        
+
+      - name: Set tag to git commit
+        run: git tag -a ${GITHUB_SHA} -m "Tagging commit" && git push origin ${GITHUB_SHA}
+
       - name: Dpkg 32-bit
-        run: sudo dpkg --add-architecture i386 && sudo apt update && sudo apt upgrade
+        run: sudo dpkg --add-architecture i386 && sudo apt update
 
       - name: Setup Wine & Python
         run: sudo apt install wine wine32 python3
