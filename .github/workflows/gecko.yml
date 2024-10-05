@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v
+        uses: actions/checkout@v4
         
       - name: Dpkg 32-bit
         run: sudo dpkg --add-architecture i386
