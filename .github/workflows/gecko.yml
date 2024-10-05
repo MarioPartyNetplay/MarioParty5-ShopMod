@@ -28,3 +28,10 @@ jobs:
         with:
           name: MP5ShopMod-Gecko
           path: code.txt
+
+      - name: GitHub Releases
+        uses: fnkr/github-action-ghr@v1.3
+        env:
+            GHR_COMPRESS: zip
+            GHR_PATH: code.txt
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
