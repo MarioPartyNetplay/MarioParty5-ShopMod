@@ -4,7 +4,7 @@ on: [push, pull_request]
 
 jobs:
   Windows:
-    runs-on: windows-2022
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -14,11 +14,14 @@ jobs:
         with:
           python-version: 3.10
 
+      - name: Setup Wine
+        run: apt install wine
+
       - name: Compile C Code to ASM
         run: python3 c_to_codewrite.py src/shops.c src/include/mp5.us.lst
         
       - name: Compile ASM Code to PowerPC Binary
-        run: compiler/codewrite/powerpc-gekko-as.exe -a32 -mbig -mregnames -mgekko src/shops.s 
+        run: wine compiler/codewrite/powerpc-gekko-as.exe -a32 -mbig -mregnames -mgekko src/shops.s 
 
       - name: Compile PowerPC Binary to Gecko Code
         run: python3 gecko.py a.out 800C0950 code.txt
