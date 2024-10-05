@@ -112,7 +112,7 @@ void CapMachineExec2(void) {
     ItemChoices itemChoices[10]; //10 items max
     //volatile so that regardless of optimization level, it will always recheck the value (needed for the choice message box at the end)
     //currently though, we compile with -O0 so no volatile needed
-    s32 amountOfShopItems = 5; 
+    s32 amountOfShopItems = 3; 
     char* itemChoiceFormat;
     char* itemChoiceFormat2;
     char* shopPrologueText;
