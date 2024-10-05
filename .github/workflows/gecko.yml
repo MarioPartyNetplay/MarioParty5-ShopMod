@@ -12,19 +12,31 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5.2.0
         with:
-          python-version: 3.10
+          python-version: 3.9
 
-      - name: Compile C Code to ASM
-        run: python3 c_to_codewrite.py src/shops.c src/include/mp5.us.lst
-        
-      - name: Compile ASM Code to PowerPC Binary
-        run: compiler/codewrite/powerpc-gekko-as.exe -a32 -mbig -mregnames -mgekko src/shops.s 
+      - name: Make Dist Directory
+        run: mkdir dist
 
-      - name: Compile PowerPC Binary to Gecko Code
-        run: python3 gecko.py a.out 800C0950 code.txt
+      - name: Compile capsuleShop.c Code
+        run: python3 c_to_codewrite.py src/capsuleShop.c src/include/mp5.us.lst && compiler/codewrite/powerpc-gekko-as.exe -a32 -mbig -mregnames -mgekko src/capsuleShop.s && python3 gecko.py a.out 800C0950 capsuleShop.txt1
+
+      - name: Compile removeCapsuleCostCheck.asm Code
+        run: compiler/codewrite/powerpc-gekko-as.exe -a32 -mbig -mregnames -mgekko src/removeCapsuleCost.asm && python3 gecko.py a.out 800c2708 removeCapsuleCost.txt1
+
+      - name: Compile removeCapsuleCostCheck.asm Code
+        run: compiler/codewrite/powerpc-gekko-as.exe -a32 -mbig -mregnames -mgekko src/removeCapsuleCostCheck.asm && python3 gecko.py a.out 800c56e0 removeCapsuleCostCheck.txt1
+
+      - name: Compile removeCapsuleCostCheck.asm Code
+        run: compiler/codewrite/powerpc-gekko-as.exe -a32 -mbig -mregnames -mgekko src/removeCapsuleCostCheckDescription.asm && python3 gecko.py a.out 800c5b48 removeCapsuleCostCheckDescription.txt1
+
+      - name: Compile removeCapsuleCostCheck.asm Code
+        run: compiler/codewrite/powerpc-gekko-as.exe -a32 -mbig -mregnames -mgekko src/removeCapsulePriceDisplay.asm && python3 gecko.py a.out 8004bf38 removeCapsulePriceDisplay.txt1
+
+      - name: Merge The Codes
+        run: type *.txt1 > dist/mainCode.txt
 
       - name: Upload Gecko Code
         uses: actions/upload-artifact@v4
         with:
           name: MP5ShopMod-Gecko
-          path: code.txt
+          path: dist/
