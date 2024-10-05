@@ -9,12 +9,6 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-        env:
-          SHA6: "${GITHUB_SHA:0:6}"
-      
-      - name: Set tag to git commit
-        run: git config user.name "Buildbot" && git config user.email "gecko@build.bot" && git tag -a ${SHA6} -m "Tagging commit" && git push origin ${SHA6}
-
       - name: Dpkg 32-bit
         run: sudo dpkg --add-architecture i386 && sudo apt update
 
@@ -35,10 +29,3 @@ jobs:
         with:
           name: MP5ShopMod-Gecko
           path: code.txt
-
-      - name: GitHub Releases
-        uses: fnkr/github-action-ghr@v1.3
-        env:
-            GHR_COMPRESS: zip
-            GHR_PATH: code.txt
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
