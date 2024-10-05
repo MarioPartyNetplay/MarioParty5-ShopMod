@@ -7,11 +7,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v
+        
+      - name: Dpkg 32-bit
+        run: sudo dpkg --add-architecture i386
 
       - name: Setup Wine & Python
-        run: sudo apt install wine python3
-
+        run: sudo apt install wine win32 python3
+        
       - name: Compile C Code to ASM
         run: python3 c_to_codewrite.py src/shops.c src/include/mp5.us.lst
         
