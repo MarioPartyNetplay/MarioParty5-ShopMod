@@ -17,7 +17,7 @@ with open(args.input_file, 'rb') as f:
 data = data[52:data.index(b'\x00\x2E\x73\x79\x6D\x74\x61\x62')]  # Adjusted for Python
 
 # Calculate the number of lines
-num_lines = (len(data) + 7) // 8 + 1  # Calculate number of lines (rounding up) and add 1 for the final line
+num_lines = (len(data) + 7) // 8  # Calculate number of lines (rounding up) and add 1 for the final line
 
 # Prepare the output code
 code = []
@@ -50,7 +50,7 @@ if counter % 8 != 0:
     code.append(" 00000000")  # Add padding if not a multiple of 8
 
 # Calculate the number of lines
-num_lines = (len(data) + 7) // 8 + 1  # Calculate number of lines (rounding up) and add 1 for the final line
+num_lines = (len(data) + 7) // 8  # Calculate number of lines (rounding up) and add 1 for the final line
 
 # Add the initial line with the starting address and number of lines
 code.insert(0, f"{start_address_int:08X} {num_lines:08X}\n")  # Insert at the beginning
@@ -58,6 +58,7 @@ code.insert(0, f"{start_address_int:08X} {num_lines:08X}\n")  # Insert at the be
 # Only add the final line if the total bytes complete a full line of 8 bytes
 if len(data) % 8 == 0:
     code.append("\n60000000 00000000")  # Final line only if complete
+    num_lines = num_lines + 1  # Calculate number of lines (rounding up) and add 1 for the final line
 
 # Join the code into a single string
 formatted_code = ''.join(code)
