@@ -123,45 +123,45 @@ void CapMachineExec2(void) {
 
     ASM_DATA(costs,
     "\
-    10, 10, /* 0 - Mushroom */\
-    10, 10, /* 1 - Super Mushroom */\
+    5, 10, /* 0 - Mushroom */\
+    15, 10, /* 1 - Super Mushroom */\
     10, 10, /* 2 - Cursed Mushroom */\
     10, 10, /* 3 - Warp Pipe */\
     10, 10, /* 4 - Klepto */\
     10, 10, /* 5 - Bubble */\
-    10, 10, /* 6 - Wiggler */\
+    30, 10, /* 6 - Wiggler */\
     10, 10, /* 7 - Unused */\
     10, 10, /* 8 - Unused */\
     10, 10, /* 9 - Unused */\
     10, 10, /* 10 - Hammer Bro */\
-    10, 10, /* 11 - Coin Block */\
+    5, 10, /* 11 - Coin Block */\
     10, 10, /* 12 - Spiny */\
-    10, 10, /* 13 - Paratroopa */\
-    10, 10, /* 14 - Bullet Bill */\
-    10, 10, /* 15 - Goomba */\
+    15, 10, /* 13 - Paratroopa */\
+    15, 10, /* 14 - Bullet Bill */\
+    20, 10, /* 15 - Goomba */\
     10, 10, /* 16 - Bob-omb */\
-    10, 10, /* 17 - Koopa Bank */\
+    15, 10, /* 17 - Koopa Bank */\
     10, 10, /* 18 - Unused */\
     10, 10, /* 19 - Unused */\
     10, 10, /* 20 - Kamek */\
     10, 10, /* 21 - Mr. Blizzard */\
-    10, 10, /* 22 - Piranha Plant */\
+    15, 10, /* 22 - Piranha Plant */\
     10, 10, /* 23 - Magikoopa */\
-    10, 10, /* 24 - Ukiki */\
+    20, 10, /* 24 - Ukiki */\
     10, 10, /* 25 - Lakitu */\
     10, 10, /* 26 - Unused */\
     10, 10, /* 27 - Unused */\
     10, 10, /* 28 - Unused */\
     10, 10, /* 29 - Unused */\
-    10, 10, /* 30 - Tweester */\
-    10, 10, /* 31 - Duel */\
-    10, 10, /* 32 - Chain Chomp */\
-    10, 10, /* 33 - Bone */\
-    10, 10, /* 34 - Bowser */\
-    10, 10, /* 35 - Chance */\
-    10, 10, /* 36 - Miracle */\
-    10, 10, /* 37 - Donkey Kong */\
-    10, 10, /* 38 - Versus */\
+    15, 10, /* 30 - Tweester */\
+    20, 10, /* 31 - Duel */\
+    25, 10, /* 32 - Chain Chomp */\
+    15, 10, /* 33 - Bone */\
+    20, 10, /* 34 - Bowser */\
+    30, 10, /* 35 - Chance */\
+    30, 10, /* 36 - Miracle */\
+    20, 10, /* 37 - Donkey Kong */\
+    20, 10, /* 38 - Versus */\
     10, 10, /* 39 - Unused */\
     10, 10, /* 40 - Camera Debug */\
     10, 10, /* 41 - Movement Debug */\
