@@ -112,7 +112,7 @@ void CapMachineExec2(void) {
     ItemChoices itemChoices[10]; //10 items max
     //volatile so that regardless of optimization level, it will always recheck the value (needed for the choice message box at the end)
     //currently though, we compile with -O0 so no volatile needed
-    s32 amountOfShopItems = 3; 
+    u8* amountOfShopItems; 
     char* itemChoiceFormat;
     char* itemChoiceFormat2;
     char* shopPrologueText;
@@ -120,54 +120,55 @@ void CapMachineExec2(void) {
     char* exitString;
     s32 len;
     s32 skipAnimation = TRUE;
+    s32 cheapestItem = 999;
+
+    ASM_DATA(amountOfShopItems, "3");
 
     ASM_DATA(costs,
     "\
-    5, 10, /* 0 - Mushroom */\
-    15, 10, /* 1 - Super Mushroom */\
-    10, 10, /* 2 - Cursed Mushroom */\
-    10, 10, /* 3 - Warp Pipe */\
-    10, 10, /* 4 - Klepto */\
-    10, 10, /* 5 - Bubble */\
-    30, 10, /* 6 - Wiggler */\
-    10, 10, /* 7 - Unused */\
-    10, 10, /* 8 - Unused */\
-    10, 10, /* 9 - Unused */\
-    10, 10, /* 10 - Hammer Bro */\
-    5, 10, /* 11 - Coin Block */\
-    10, 10, /* 12 - Spiny */\
-    15, 10, /* 13 - Paratroopa */\
-    15, 10, /* 14 - Bullet Bill */\
-    20, 10, /* 15 - Goomba */\
-    10, 10, /* 16 - Bob-omb */\
-    15, 10, /* 17 - Koopa Bank */\
-    10, 10, /* 18 - Unused */\
-    10, 10, /* 19 - Unused */\
-    10, 10, /* 20 - Kamek */\
-    10, 10, /* 21 - Mr. Blizzard */\
-    15, 10, /* 22 - Piranha Plant */\
-    10, 10, /* 23 - Magikoopa */\
-    20, 10, /* 24 - Ukiki */\
-    10, 10, /* 25 - Lakitu */\
-    10, 10, /* 26 - Unused */\
-    10, 10, /* 27 - Unused */\
-    10, 10, /* 28 - Unused */\
-    10, 10, /* 29 - Unused */\
-    15, 10, /* 30 - Tweester */\
-    20, 10, /* 31 - Duel */\
-    25, 10, /* 32 - Chain Chomp */\
-    15, 10, /* 33 - Bone */\
-    20, 10, /* 34 - Bowser */\
-    30, 10, /* 35 - Chance */\
-    30, 10, /* 36 - Miracle */\
-    20, 10, /* 37 - Donkey Kong */\
-    20, 10, /* 38 - Versus */\
-    10, 10, /* 39 - Unused */\
-    10, 10, /* 40 - Camera Debug */\
-    10, 10, /* 41 - Movement Debug */\
+    5, /* 0 - Mushroom */\
+    15, /* 1 - Super Mushroom */\
+    10, /* 2 - Cursed Mushroom */\
+    10, /* 3 - Warp Pipe */\
+    10, /* 4 - Klepto */\
+    10, /* 5 - Bubble */\
+    30, /* 6 - Wiggler */\
+    10, /* 7 - Unused */\
+    10, /* 8 - Unused */\
+    10, /* 9 - Unused */\
+    10, /* 10 - Hammer Bro */\
+    5, /* 11 - Coin Block */\
+    10, /* 12 - Spiny */\
+    15, /* 13 - Paratroopa */\
+    15, /* 14 - Bullet Bill */\
+    20, /* 15 - Goomba */\
+    10, /* 16 - Bob-omb */\
+    15, /* 17 - Koopa Bank */\
+    10, /* 18 - Unused */\
+    10, /* 19 - Unused */\
+    10, /* 20 - Kamek */\
+    10, /* 21 - Mr. Blizzard */\
+    15, /* 22 - Piranha Plant */\
+    10, /* 23 - Magikoopa */\
+    20, /* 24 - Ukiki */\
+    10, /* 25 - Lakitu */\
+    10, /* 26 - Unused */\
+    10, /* 27 - Unused */\
+    10, /* 28 - Unused */\
+    10, /* 29 - Unused */\
+    15, /* 30 - Tweester */\
+    20, /* 31 - Duel */\
+    25, /* 32 - Chain Chomp */\
+    15, /* 33 - Bone */\
+    20, /* 34 - Bowser */\
+    30, /* 35 - Chance */\
+    30, /* 36 - Miracle */\
+    20, /* 37 - Donkey Kong */\
+    20, /* 38 - Versus */\
+    10, /* 39 - Unused */\
+    10, /* 40 - Camera Debug */\
+    10, /* 41 - Movement Debug */\
     ");
-
-    //ASM_STRING(itemChoiceFormat, "\x0F  %%s\x10\x0E\x13%%d\n");
 
     ASM_STRING(shopPrologueText, "    Which\x10""capsule\x10would\x10you\n    like\x10to\x10purchase");
     ASM_STRING(itemChoiceFormat, "      \x0F%%s");
@@ -187,10 +188,19 @@ void CapMachineExec2(void) {
 
     for (i = 0; i < 42; i++) {
         capsuleTbl[i].price = costs[i].cost;
+        if (costs[i].cost < cheapestItem) {
+            cheapestItem = costs[i].cost;
+        }
     }
 
     s32 playerNo = GwSystem.turnPlayerNo;
     s32 coin = GWPlayerCoinGet(playerNo);
+
+    //player cant afford any items, just skip the space
+    if (coin < cheapestItem) {
+        HuPrcEnd();
+        return;        
+    }
 
     //actually type this correctly later
     u32* prc = HuPrcCurrentGet();
@@ -210,7 +220,7 @@ void CapMachineExec2(void) {
     GET_CAPSULE_NO_CAN_AFFORD(itemChoices[0].item, itemChoices[0].cost);
 
     //get random items for shop
-    for (i = 1; i < amountOfShopItems; i++) {
+    for (i = 1; i < *amountOfShopItems; i++) {
         s32 curItem, curItemCost, isDuplicate;
 
         //roll for items until it's not a duplicate
@@ -234,7 +244,7 @@ void CapMachineExec2(void) {
     }
 
     //75 characters per line should be enough
-    buffer = HuMemDirectMalloc(1, amountOfShopItems * 75);
+    buffer = HuMemDirectMalloc(1, *amountOfShopItems * 75);
 
     //build item list
     sprintf(&buffer[0], singleString, shopPrologueText);
@@ -243,8 +253,7 @@ void CapMachineExec2(void) {
     buffer[len] = '\xC3';
     buffer[len+1] = '\n';
     buffer[len+2] = '\0';
-    //sprintf(&buffer[0], itemChoiceFormat, HuWinMesPtrGet(MBCapsuleMesGet(itemChoices[0].item)), itemChoices[0].cost);
-    for (i = 0; i < amountOfShopItems; i++) {
+    for (i = 0; i < *amountOfShopItems; i++) {
         s32 prevlen = strlen(buffer);
         sprintf(&buffer[prevlen], itemChoiceFormat, HuWinMesPtrGet(MBCapsuleMesGet(itemChoices[i].item)));
         s32 curlen = strlen(buffer);
@@ -256,77 +265,26 @@ void CapMachineExec2(void) {
         //if item is coin block or bob-omb, hardcode tab count to 4
         if (itemChoices[i].item == 11 || itemChoices[i].item == 16) {
             tabCounts = 4;
-            //if kamek or klepto
+            //if kamek, klepto, or lakitu
         } else if (itemChoices[i].item == 20 || itemChoices[i].item == 4 || itemChoices[i].item == 25) {
             tabCounts = 6;
         } else if (curCapsuleNameLen > 13 + 7) {
-            // buffer[curlen] = '\x0C';
             tabCounts = 1;
         } else if (curCapsuleNameLen > 11 + 7) {
-            // buffer[curlen] = '\x0C';
-            // buffer[curlen+1] = '\x0C';
             tabCounts = 2;
         } else if (curCapsuleNameLen > 9 + 7) {
-            // buffer[curlen] = '\x0C';
-            // buffer[curlen+1] = '\x0C';
-            // buffer[curlen+2] = '\x0C';
             tabCounts = 3;
         } else if (curCapsuleNameLen > 7 + 7) {
-            // buffer[curlen] = '\x0C';
-            // buffer[curlen+1] = '\x0C';
-            // buffer[curlen+2] = '\x0C';
-            // buffer[curlen+3] = '\x0C';
             tabCounts = 4;
         } else if (curCapsuleNameLen > 5 + 7) {
-            // buffer[curlen] = '\x0C';
-            // buffer[curlen+1] = '\x0C';
-            // buffer[curlen+2] = '\x0C';
-            // buffer[curlen+3] = '\x0C';
-            // buffer[curlen+4] = '\x0C';
             tabCounts = 5;
         } else {
-            // buffer[curlen] = '\x0C';
-            // buffer[curlen+1] = '\x0C';
-            // buffer[curlen+2] = '\x0C';
-            // buffer[curlen+3] = '\x0C';
-            // buffer[curlen+4] = '\x0C';
-            // buffer[curlen+5] = '\x0C';
             tabCounts = 6;
         }
 
         for (j = 0; j < tabCounts; j++) {
             buffer[curlen + j] = '\x0C';
         }
-
-        // if (curCapsuleNameLen >= 22) {
-        //     buffer[curlen] = '\x0C';
-        // } else if (curCapsuleNameLen < 22) {
-        //     buffer[curlen] = '\x0C';
-        //     buffer[curlen+1] = '\x0C';
-        //     buffer[curlen+2] = '\x0C';
-        // } else if (curCapsuleNameLen < 18) {
-        //     buffer[curlen] = '\x0C';
-        //     buffer[curlen+1] = '\x0C';
-        //     buffer[curlen+2] = '\x0C';
-        //     buffer[curlen+3] = '\x0C';
-        // } else if (curCapsuleNameLen < 16) {
-        //     buffer[curlen] = '\x0C';
-        //     buffer[curlen+1] = '\x0C';
-        //     buffer[curlen+2] = '\x0C';
-        //     buffer[curlen+3] = '\x0C';
-        //     buffer[curlen+4] = '\x0C';
-        // } else if (curCapsuleNameLen < 12) {
-        //     buffer[curlen] = '\x0C';
-        //     buffer[curlen+1] = '\x0C';
-        //     buffer[curlen+2] = '\x0C';
-        //     buffer[curlen+3] = '\x0C';
-        //     buffer[curlen+4] = '\x0C';
-        //     buffer[curlen+5] = '\x0C';
-        // }
-
-        // for (; temp < 25; temp++) {
-        //     buffer[prevlen + temp] = '\x1A';
-        // }
 
         len = strlen(buffer);
         sprintf(&buffer[len], itemChoiceFormat2, itemChoices[i].cost);
@@ -336,42 +294,17 @@ void CapMachineExec2(void) {
     len = strlen(buffer);
     sprintf(&buffer[len], singleString, exitString);
 
-    if (amountOfShopItems > 4) {
+    if (*amountOfShopItems > 4) {
         MBWinCreateChoice(1, buffer, 0x14, 0);
     } else {
         MBWinCreateChoice(3, buffer, 0x14, 0);
     }
 
-    
     MBTopWinAttrReset(0x10);
     MBTopWinWait();
     choice = MBWinLastChoiceGet();
-    if (choice != -1 && choice < amountOfShopItems) {
+    if (choice != -1 && choice < *amountOfShopItems) {
         USE_CAPSULE(itemChoices[choice].item, itemChoices[choice].cost);
-        // f32 sp8[2];
-        // s32 temp_r28;
-        // s32 var_r29;
-        // if((itemChoices[choice].item) == 34) {
-        //     MBCapsuleKupaGetExec();
-        // } else if((itemChoices[choice].item) == 36) {
-        //     MB3MiracleGetExec();
-        // }
-        // MBPlayerCapsuleNoAdd(playerNo, (itemChoices[choice].item));
-        // MBPlayerPosGet(playerNo, sp8);
-        // sp8[1] += lbl_8028A420; //250.0f
-        // temp_r28 = MBCoinDispCreate(sp8, -itemChoices[choice].cost, 0);
-        // MBCameraMotionWait();
-        // MBPlayerMotionNoShiftSet(playerNo, 0xC, lbl_8028A3E8, lbl_8028A424, 0);
-        // MBCoinAddNoDispExec(playerNo, -itemChoices[choice].cost);
-        // //wait for animation to finish
-        // var_r29 = 0;
-        // while (MBCoinDispCheck(temp_r28) == 0 || var_r29 == 0) {
-        //     if ((MBPlayerMotionEndCheck(playerNo) != 0) && (var_r29 == 0)) {
-        //         MBPlayerMotIdleSet(playerNo);
-        //         var_r29 = 1;
-        //     }
-        //     HuPrcVSleep();
-        // }
     }
     MBTopWinKill();
     HuMemDirectFree(buffer);
