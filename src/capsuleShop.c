@@ -122,7 +122,7 @@ void CapMachineExec2(void) {
     s32 skipAnimation = TRUE;
     s32 cheapestItem = 999;
 
-    ASM_DATA(amountOfShopItems, "3");
+    ASM_DATA(amountOfShopItems, "5");
 
     ASM_DATA(costs,
     "\
