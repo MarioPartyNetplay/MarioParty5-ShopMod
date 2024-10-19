@@ -122,7 +122,7 @@ void CapMachineExec2(void) {
     s32 skipAnimation = TRUE;
     s32 cheapestItem = 999;
 
-    ASM_DATA(amountOfShopItems, "5");
+    ASM_DATA(amountOfShopItems, "3");
 
     ASM_DATA(costs,
     "\
@@ -246,6 +246,9 @@ void CapMachineExec2(void) {
     //75 characters per line should be enough
     buffer = HuMemDirectMalloc(1, *amountOfShopItems * 75);
 
+    for (i = 0; i < *amountOfShopItems * 75; i++) {
+        buffer[i] = 0;
+    }
     //build item list
     sprintf(&buffer[0], singleString, shopPrologueText);
     len = strlen(buffer);
