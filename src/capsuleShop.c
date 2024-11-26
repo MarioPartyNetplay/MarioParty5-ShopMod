@@ -128,8 +128,8 @@ void CapMachineExec2(void) {
     "\
     5, /* 0 - Mushroom */\
     15, /* 1 - Super Mushroom */\
-    10, /* 2 - Cursed Mushroom */\
-    10, /* 3 - Warp Pipe */\
+    5, /* 2 - Cursed Mushroom */\
+    15, /* 3 - Warp Pipe */\
     10, /* 4 - Klepto */\
     10, /* 5 - Bubble */\
     30, /* 6 - Wiggler */\
@@ -139,32 +139,32 @@ void CapMachineExec2(void) {
     10, /* 10 - Hammer Bro */\
     5, /* 11 - Coin Block */\
     10, /* 12 - Spiny */\
-    15, /* 13 - Paratroopa */\
+    10, /* 13 - Paratroopa */\
     15, /* 14 - Bullet Bill */\
     20, /* 15 - Goomba */\
     10, /* 16 - Bob-omb */\
-    15, /* 17 - Koopa Bank */\
+    10, /* 17 - Koopa Bank */\
     10, /* 18 - Unused */\
     10, /* 19 - Unused */\
     10, /* 20 - Kamek */\
-    10, /* 21 - Mr. Blizzard */\
-    15, /* 22 - Piranha Plant */\
-    10, /* 23 - Magikoopa */\
-    20, /* 24 - Ukiki */\
-    10, /* 25 - Lakitu */\
+    5, /* 21 - Mr. Blizzard */\
+    10, /* 22 - Piranha Plant */\
+    15, /* 23 - Magikoopa */\
+    10, /* 24 - Ukiki */\
+    15, /* 25 - Lakitu */\
     10, /* 26 - Unused */\
     10, /* 27 - Unused */\
     10, /* 28 - Unused */\
     10, /* 29 - Unused */\
-    15, /* 30 - Tweester */\
-    20, /* 31 - Duel */\
-    25, /* 32 - Chain Chomp */\
+    10, /* 30 - Tweester */\
+    15, /* 31 - Duel */\
+    30, /* 32 - Chain Chomp */\
     15, /* 33 - Bone */\
     20, /* 34 - Bowser */\
-    30, /* 35 - Chance */\
-    30, /* 36 - Miracle */\
-    20, /* 37 - Donkey Kong */\
-    20, /* 38 - Versus */\
+    20, /* 35 - Chance */\
+    20, /* 36 - Miracle */\
+    10, /* 37 - Donkey Kong */\
+    10, /* 38 - Versus */\
     10, /* 39 - Unused */\
     10, /* 40 - Camera Debug */\
     10, /* 41 - Movement Debug */\
