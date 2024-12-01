@@ -1,0 +1,11 @@
+loc_0x0:
+  lis r3, 0x817F
+  ori r3, r3, 0xFFFC
+  lwz r4, 0(r3)
+  cmpwi r4, 0x1
+  beq- loc_0x18
+  mulli r30, r30, 0x3
+
+loc_0x18:
+  lis r4, 0x0
+  stw r4, 0(r3)
