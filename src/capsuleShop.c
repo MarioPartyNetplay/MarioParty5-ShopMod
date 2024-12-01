@@ -1,4 +1,3 @@
-
 #include "include/types.h"
 
 #define FALSE 0
@@ -176,6 +175,8 @@ void CapMachineExec2(void) {
     ASM_STRING(singleString, "%%s");
     ASM_STRING(exitString, "      \x0F""Exit");
 
+    
+
     //if last turn, display message and exit
     //maybe add a check for if it's a team mode
     if (GwSystem.turnNo == GwSystem.turnCnt) {
@@ -202,6 +203,8 @@ void CapMachineExec2(void) {
         return;        
     }
 
+    
+
     //actually type this correctly later
     u32* prc = HuPrcCurrentGet();
     u32* prc2 = prc[0x4B];
@@ -211,6 +214,7 @@ void CapMachineExec2(void) {
     if(GwPlayer[playerNo].comF) {
         s32 capsuleNo1, cost1;
         GET_CAPSULE_NO_CAN_AFFORD(capsuleNo1, cost1);
+        *(int*)0x817FFFFC = 1;
         USE_CAPSULE(capsuleNo1, cost1);
         HuPrcEnd();
         return;
@@ -245,10 +249,10 @@ void CapMachineExec2(void) {
 
     //75 characters per line should be enough
     buffer = HuMemDirectMalloc(1, *amountOfShopItems * 75);
-
     for (i = 0; i < *amountOfShopItems * 75; i++) {
         buffer[i] = 0;
     }
+
     //build item list
     sprintf(&buffer[0], singleString, shopPrologueText);
     len = strlen(buffer);
@@ -307,6 +311,7 @@ void CapMachineExec2(void) {
     MBTopWinWait();
     choice = MBWinLastChoiceGet();
     if (choice != -1 && choice < *amountOfShopItems) {
+        *(int*)0x817FFFFC = 1;
         USE_CAPSULE(itemChoices[choice].item, itemChoices[choice].cost);
     }
     MBTopWinKill();
