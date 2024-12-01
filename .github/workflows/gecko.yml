@@ -20,17 +20,20 @@ jobs:
       - name: Compile capsuleShop.c Code
         run: python3 c_to_codewrite.py src/capsuleShop.c src/include/mp5.us.lst && compiler/codewrite/powerpc-gekko-as.exe -a32 -mbig -mregnames -mgekko src/capsuleShop.s && python3 gecko.py a.out 800C0950 capsuleShop.txt1
 
-      - name: Compile removeCapsuleCostCheck.asm Code
+      - name: Compile removeCapsuleCost.asm Code
         run: compiler/codewrite/powerpc-gekko-as.exe -a32 -mbig -mregnames -mgekko src/removeCapsuleCost.asm && python3 gecko.py a.out 800c2708 removeCapsuleCost.txt1
 
       - name: Compile removeCapsuleCostCheck.asm Code
         run: compiler/codewrite/powerpc-gekko-as.exe -a32 -mbig -mregnames -mgekko src/removeCapsuleCostCheck.asm && python3 gecko.py a.out 800c56e0 removeCapsuleCostCheck.txt1
 
-      - name: Compile removeCapsuleCostCheck.asm Code
+      - name: Compile removeCapsuleCostCheckDescription.asm Code
         run: compiler/codewrite/powerpc-gekko-as.exe -a32 -mbig -mregnames -mgekko src/removeCapsuleCostCheckDescription.asm && python3 gecko.py a.out 800c5b48 removeCapsuleCostCheckDescription.txt1
 
-      - name: Compile removeCapsuleCostCheck.asm Code
+      - name: Compile removeCapsulePriceDisplay.asm Code
         run: compiler/codewrite/powerpc-gekko-as.exe -a32 -mbig -mregnames -mgekko src/removeCapsulePriceDisplay.asm && python3 gecko.py a.out 8004bf38 removeCapsulePriceDisplay.txt1
+
+      - name: Compile capsuleMod5.asm Code
+        run: compiler/codewrite/powerpc-gekko-as.exe -a32 -mbig -mregnames -mgekko src/capsuleMod5.asm && python3 gecko.py a.out 800a9e08 capsuleMod5.txt1
 
       - name: Merge The Codes
         run: type *.txt1 > dist/mainCode.txt
