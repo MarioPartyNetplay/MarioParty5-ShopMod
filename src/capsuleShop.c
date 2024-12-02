@@ -125,7 +125,7 @@ void CapMachineExec2(void) {
     if (amountOfShopItems == 0) {
         ASM_DATA(amountOfShopItems, "3");
     } else {
-        ASM_DATA(amountOfShopItems, *(short*)0x817FFFFE);
+        ASM_DATA(amountOfShopItems, (*(short*)0x817FFFFE));
     }
     
     ASM_DATA(costs,
