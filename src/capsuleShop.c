@@ -121,8 +121,11 @@ void CapMachineExec2(void) {
     s32 skipAnimation = TRUE;
     s32 cheapestItem = 999;
 
-    ASM_DATA(amountOfShopItems, "3");
-
+    amountOfShopItems = *(short*)0x817FFFFE;
+    if (amountOfShopItems == 0) {
+        amountOfShopItems = 3;
+    }
+    
     ASM_DATA(costs,
     "\
     5, /* 0 - Mushroom */\
@@ -214,7 +217,7 @@ void CapMachineExec2(void) {
     if(GwPlayer[playerNo].comF) {
         s32 capsuleNo1, cost1;
         GET_CAPSULE_NO_CAN_AFFORD(capsuleNo1, cost1);
-        *(int*)0x817FFFFC = 1;
+        *(short*)0x817FFFFC = 1;
         USE_CAPSULE(capsuleNo1, cost1);
         HuPrcEnd();
         return;
@@ -311,7 +314,7 @@ void CapMachineExec2(void) {
     MBTopWinWait();
     choice = MBWinLastChoiceGet();
     if (choice != -1 && choice < *amountOfShopItems) {
-        *(int*)0x817FFFFC = 1;
+        *(short*)0x817FFFFC = 1;
         USE_CAPSULE(itemChoices[choice].item, itemChoices[choice].cost);
     }
     MBTopWinKill();
