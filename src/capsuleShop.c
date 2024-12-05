@@ -111,7 +111,7 @@ void CapMachineExec2(void) {
     ItemChoices itemChoices[10]; //10 items max
     //volatile so that regardless of optimization level, it will always recheck the value (needed for the choice message box at the end)
     //currently though, we compile with -O0 so no volatile needed
-    u8* amountOfShopItems; 
+    s16* amountOfShopItems; 
     char* itemChoiceFormat;
     char* itemChoiceFormat2;
     char* shopPrologueText;
@@ -221,6 +221,7 @@ void CapMachineExec2(void) {
         GET_CAPSULE_NO_CAN_AFFORD(capsuleNo1, cost1);
         *(short*)0x817FFFFC = 1;
         USE_CAPSULE(capsuleNo1, cost1);
+        *(short*)0x817FFFFC = 0;
         HuPrcEnd();
         return;
     }
@@ -229,7 +230,7 @@ void CapMachineExec2(void) {
     GET_CAPSULE_NO_CAN_AFFORD(itemChoices[0].item, itemChoices[0].cost);
 
     //get random items for shop
-    for (i = 1; i < *amountOfShopItems; i++) {
+    for (i = 1; i < amountOfShopItems; i++) {
         s32 curItem, curItemCost, isDuplicate;
 
         //roll for items until it's not a duplicate
@@ -253,8 +254,8 @@ void CapMachineExec2(void) {
     }
 
     //75 characters per line should be enough
-    buffer = HuMemDirectMalloc(1, *amountOfShopItems * 75);
-    for (i = 0; i < *amountOfShopItems * 75; i++) {
+    buffer = HuMemDirectMalloc(1, amountOfShopItems * 75);
+    for (i = 0; i < amountOfShopItems * 75; i++) {
         buffer[i] = 0;
     }
 
@@ -265,7 +266,7 @@ void CapMachineExec2(void) {
     buffer[len] = '\xC3';
     buffer[len+1] = '\n';
     buffer[len+2] = '\0';
-    for (i = 0; i < *amountOfShopItems; i++) {
+    for (i = 0; i < amountOfShopItems; i++) {
         s32 prevlen = strlen(buffer);
         sprintf(&buffer[prevlen], itemChoiceFormat, HuWinMesPtrGet(MBCapsuleMesGet(itemChoices[i].item)));
         s32 curlen = strlen(buffer);
@@ -306,7 +307,7 @@ void CapMachineExec2(void) {
     len = strlen(buffer);
     sprintf(&buffer[len], singleString, exitString);
 
-    if (*amountOfShopItems > 4) {
+    if (amountOfShopItems > 4) {
         MBWinCreateChoice(1, buffer, 0x14, 0);
     } else {
         MBWinCreateChoice(3, buffer, 0x14, 0);
@@ -315,7 +316,7 @@ void CapMachineExec2(void) {
     MBTopWinAttrReset(0x10);
     MBTopWinWait();
     choice = MBWinLastChoiceGet();
-    if (choice != -1 && choice < *amountOfShopItems) {
+    if (choice != -1 && choice < amountOfShopItems) {
         *(short*)0x817FFFFC = 1;
         USE_CAPSULE(itemChoices[choice].item, itemChoices[choice].cost);
     }
