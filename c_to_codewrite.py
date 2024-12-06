@@ -22,7 +22,7 @@ def compile_to_asm(filename):
             "-fno-asynchronous-unwind-tables",  # Remove unnecessary unwind tables
             "-fno-ident",            # Remove .ident metadata
             "-fno-common",           # Remove common symbols
-            "-O0",                   # Optimize with level 0 optimization for compatiblity
+            "-O1",                   # Optimize with level 1 optimization for compatiblity
             "-fno-optimize-sibling-calls",  # Disable tail call optimization
             filename,                # Input file
             "-o", f"{base_name}.s"   # Output assembly file
@@ -35,7 +35,7 @@ def compile_to_asm(filename):
             "-fno-asynchronous-unwind-tables",  # Remove unnecessary unwind tables
             "-fno-ident",            # Remove .ident metadata
             "-fno-common",           # Remove common symbols
-            "-O0",                   # Optimize with level 0 optimization for compatiblity
+            "-O1",                   # Optimize with level 1 optimization for compatiblity
             "-fno-optimize-sibling-calls",  # Disable tail call optimization
             filename,                # Input file
             "-o", f"{base_name}.s"   # Output assembly file
